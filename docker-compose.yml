@@ -2,12 +2,17 @@ version: '3'
 services:
   jenkins:
     container_name: jenkins
-    image: jenkins/jenkins:lts
+    build:
+      dockerfile: Dockerfile
+      context: .
     ports:
       - '80:8080'
       - '50000:50000'
     labels:
       kompose.service.type: LoadBalancer
+    volumes:
+      - docker:/var/run/docker.sock
+      - jenkins_home:/var/jenkins_home
   registry:
     restart: always
     image: registry:2
@@ -15,3 +20,6 @@ services:
       - 5000:5000
     labels:
       kompose.service.type: LoadBalancer
+volumes:
+  jenkins_home:
+  docker:
