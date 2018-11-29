@@ -31,7 +31,6 @@ spec:
           name: docker
         - mountPath: /var/jenkins_home
           name: jenkins-home
-      restartPolicy: Always
       volumes:
       - name: docker
         persistentVolumeClaim:
@@ -39,4 +38,15 @@ spec:
       - name: jenkins-home
         persistentVolumeClaim:
           claimName: jenkins-home
+      initContainers:
+      - name: permissionsfix
+        image: alpine:latest
+        command: ["/bin/sh", "-c"]
+        args:
+        - chown 1000:1000 /var/jenkins_home;
+        volumeMounts:
+        - name: jenkins-home # Or you can replace with any name
+          mountPath: /var/jenkins_home # Must match the mount path in the args line
+      restartPolicy: Always
+
 status: {}
