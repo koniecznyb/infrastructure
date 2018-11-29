@@ -20,7 +20,7 @@ spec:
         io.kompose.service: jenkins
     spec:
       containers:
-      - image: jenkins
+      - image: jenkins/jenkins:lts
         name: jenkins
         ports:
         - containerPort: 8080
